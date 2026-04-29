@@ -12,15 +12,24 @@ const display = document.querySelector(".calc-display")
 
 let total = 0
 display.textContent = "0"
+let count = 0
 
 clear.addEventListener('click', () => {
-  let total = 0
+  total = 0
+  count = 0
   display.textContent = "0"
   dot.disabled = false;
+  numButtons.forEach(button => {
+    button.disabled = false;
+  })
 })
 
 backspace.addEventListener('click', () => {
-  display.textContent = display.textContent.slice(0, -1)
+  display.textContent = display.textContent.slice(0, -1);
+  count -= 1;
+  numButtons.forEach(button => {
+    button.disabled = false;
+  })
 })
 
 const numButtons = document.querySelectorAll('.num button')
@@ -35,6 +44,13 @@ numButtons.forEach(button => {
     display.textContent += e.target.value;
     total = strToNum(display.textContent)
     console.log(total)
+    count += 1
+    if (count >= 18) {
+      numButtons.forEach(button => {
+        button.disabled = true;
+      })
+    }
+    console.log(`Count: ${count}`)
   });
 })
 
