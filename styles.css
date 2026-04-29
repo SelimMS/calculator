@@ -1,0 +1,71 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-family: sans-serif;
+  text-align: center;
+  padding: 50px;
+  font-size: 48px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calc {
+  width: 506px;
+  height: 610px;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: rgb(48, 48, 48);
+  border-radius: 10px;
+  gap: 2px;
+  padding: 2px;
+}
+
+.calc-display {
+  height: 100px;
+  width: 500px;
+  padding-right: 10px;
+  padding-left: 10px;
+  color: white;
+  border-radius: 10px;
+  font-family: sans-serif;
+  font-size: 48px;
+  justify-content: end;
+  align-items: end;
+  display: flex;
+}
+
+.calc-buttons button{
+  border: 1px solid #484848;
+  height: 100px;
+  width: 125px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  border-radius: 8px;
+  font-family: sans-serif;
+  font-size: 24px;
+  cursor: pointer;
+  box-sizing: border-box;
+  color: white;
+  background-color: rgb(92, 92, 92);
+}
+
+
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
