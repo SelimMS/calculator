@@ -24,20 +24,20 @@ h1 {
   background-color: rgb(48, 48, 48);
   border-radius: 10px;
   gap: 2px;
-  padding: 2px;
+  padding: 3px;
 }
 
 .calc-display {
   height: 100px;
   width: 500px;
-  padding-right: 10px;
-  padding-left: 10px;
+  padding-right: 15px;
+  padding-left: 15px;
   color: white;
   border-radius: 10px;
   font-family: sans-serif;
   font-size: 48px;
   justify-content: end;
-  align-items: end;
+  align-items: center;
   display: flex;
 }
 
@@ -58,7 +58,10 @@ h1 {
   background-color: rgb(92, 92, 92);
 }
 
-
+#equals button{
+  background-color: cyan;
+  color: #484848;
+}
 
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */

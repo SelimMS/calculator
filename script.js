@@ -14,7 +14,13 @@ let total = 0
 display.textContent = "0"
 
 clear.addEventListener('click', () => {
-  location.reload()
+  let total = 0
+  display.textContent = "0"
+  dot.disabled = false;
+})
+
+backspace.addEventListener('click', () => {
+  display.textContent = display.textContent.slice(0, -1)
 })
 
 const numButtons = document.querySelectorAll('.num button')
@@ -29,7 +35,7 @@ numButtons.forEach(button => {
     display.textContent += e.target.value;
     total = strToNum(display.textContent)
     console.log(total)
-  })
+  });
 })
 
 function strToNum(str) {
@@ -61,4 +67,4 @@ function operate(operator, a, b) {
   return operator(a,b)
 }
 
-console.log(operate(add(5,1)))
+// console.log(operate(add(5,1)))
