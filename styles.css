@@ -17,14 +17,14 @@ h1 {
 }
 
 .calc {
-  width: 506px;
-  height: 610px;
+  width: 509px;
+  height: 616px;
   display: flex;
   flex-wrap: wrap;
   background-color: rgb(48, 48, 48);
   border-radius: 10px;
-  gap: 2px;
-  padding: 3px;
+  gap: 3px;
+  padding: 4px;
 }
 
 .calc-display {

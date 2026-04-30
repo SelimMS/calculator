@@ -58,7 +58,7 @@ numButtons.forEach(button => {
     total = strToNum(display.textContent)
     console.log(total)
     count += 1
-    if (count >= 18) {
+    if (count >= 17) {
       numButtons.forEach(button => {
         button.disabled = true;
       })
