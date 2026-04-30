@@ -30,6 +30,9 @@ backspace.addEventListener('click', () => {
   numButtons.forEach(button => {
     button.disabled = false;
   })
+  if (display.textContent.includes('.')) {
+    dot.disabled = true;
+  }
 })
 
 const numButtons = document.querySelectorAll('.num button')
@@ -38,9 +41,9 @@ numButtons.forEach(button => {
     if (display.textContent === '0') {
       display.textContent = ''
     }
-    if (display.textContent.includes('.')) {
+    dot.addEventListener('click', () => {
       dot.disabled = true;
-    }
+    })
     display.textContent += e.target.value;
     total = strToNum(display.textContent)
     console.log(total)
@@ -74,13 +77,26 @@ function multiply(a, b) {
 
 function divide(a, b) {
   if (b == 0) {
-    return "Not divisble by 0"
+    return "Cannot divide by 0"
   }
   return a / b;
 }
 
-function operate(operator, a, b) {
-  return operator(a,b)
+function percentage(a) {
+  return a / 100
 }
 
-// console.log(operate(add(5,1)))
+function operate(operator, a, b) {
+  if (operator == add) {
+    return add(a, b)
+  }
+  if (operator == subtract) {
+    return subtract(a, b)
+  }
+  if (operator == divide) {
+    return divide(a, b)
+  }
+  if (operator == multiply) {
+    return multiply(a, b)
+  }
+}
