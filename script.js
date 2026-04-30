@@ -35,6 +35,16 @@ backspace.addEventListener('click', () => {
   }
 })
 
+function toggleMinus() {
+  let prev = display.textContent
+  display.textContent = '-' + display.textContent
+  if (display.textContent.includes('--')) {
+    display.textContent = display.textContent.slice(2)
+  }
+}
+
+plusminus.addEventListener('click', toggleMinus)
+
 const numButtons = document.querySelectorAll('.num button')
 numButtons.forEach(button => {
   button.addEventListener('click', (e) => {
