@@ -9,19 +9,21 @@ const plusminus = document.querySelector("#plusminus")
 const dot = document.querySelector("#dot button")
 const equals = document.querySelector("#equals")
 const display = document.querySelector(".calc-display")
+const operators = document.querySelectorAll(".operator button")
 
 let total = 0
 display.textContent = "0"
 let count = 0
 
 clear.addEventListener('click', () => {
-  total = 0
-  count = 0
-  display.textContent = "0"
-  dot.disabled = false;
-  numButtons.forEach(button => {
-    button.disabled = false;
-  })
+  // total = 0
+  // count = 0
+  // display.textContent = "0"
+  // dot.disabled = false;
+  // numButtons.forEach(button => {
+  //   button.disabled = false;
+  // })
+  location.reload()
 })
 
 backspace.addEventListener('click', () => {
@@ -38,8 +40,10 @@ backspace.addEventListener('click', () => {
 function toggleMinus() {
   let prev = display.textContent
   display.textContent = '-' + display.textContent
+  total = strToNum(display.textContent)
   if (display.textContent.includes('--')) {
     display.textContent = display.textContent.slice(2)
+    total = strToNum(display.textContent)
   }
 }
 
@@ -58,7 +62,7 @@ numButtons.forEach(button => {
     total = strToNum(display.textContent)
     console.log(total)
     count += 1
-    if (count >= 17) {
+    if (count >= 14) {
       numButtons.forEach(button => {
         button.disabled = true;
       })
@@ -67,10 +71,57 @@ numButtons.forEach(button => {
   });
 })
 
+let digits = []
+let result = 0
+let a = 0
+let b = 0
+
+plus.addEventListener('click', () => {
+  display.textContent += '+'
+  dot.disabled = false
+  if (digits.length == 1) {
+    if(display.textContent.includes('+')) {
+      let split = display.textContent.split('+')
+      split.forEach(num => {
+        digits.push(strToNum(num))
+      })
+      a = digits[0]
+      b = digits[2]
+      if(b) {
+        result = operate(add, a, b)
+      }
+      display.textContent = result + '+'
+      digits = []
+      count = display.textContent.length
+    }
+  }
+  if(display.textContent.includes('++')) {
+    display.textContent = display.textContent.slice(0, -1)
+  }
+  total = strToNum(display.textContent)
+  digits.push(total)
+})
+
+equals.addEventListener('click', () => {
+  // Addition
+  if(display.textContent.includes('+')) {
+    let split = display.textContent.split('+')
+    split.forEach(num => {
+      digits.push(strToNum(num))
+    })
+    a = digits[0]
+    b = digits[2]
+    result = operate(add, a, b)
+    display.textContent = result
+    digits = []
+    count = display.textContent.length
+  }
+  // Subtraction
+})
+  
 function strToNum(str) {
   const num = parseFloat(str)
   return num
-  console.log(num)
 }
 
 function add(a, b) {
