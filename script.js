@@ -42,12 +42,26 @@ backspace.addEventListener('click', () => {
 })
 
 function toggleMinus() {
-  let prev = display.textContent
-  display.textContent = '-' + display.textContent
-  total = strToNum(display.textContent)
-  if (display.textContent.includes('--')) {
-    display.textContent = display.textContent.slice(2)
+  if (digits.length == 1) {
+    if (display.textContent.includes('+')){
+      let split = ''
+      split = display.textContent.split('+')
+      result = split[0] + '+-' + split[1]
+      display.textContent = result
+      total = strToNum(display.textContent)
+      if (display.textContent.includes('--')) {
+        display.textContent = display.textContent.replace('--', '')
+        total = strToNum(display.textContent)
+      }
+    }
+  } else {
+    let prev = display.textContent
+    display.textContent = '-' + display.textContent
     total = strToNum(display.textContent)
+    if (display.textContent.includes('--')) {
+      display.textContent = display.textContent.slice(2)
+      total = strToNum(display.textContent)
+    }
   }
 }
 
@@ -79,15 +93,23 @@ let a = 0
 let b = 0
 let currentOperator = ''
 let operatorList = []
+const operatorLimiter = () => {
+  if (operatorList.length > 3) {
+    operatorList.shift()
+  }
+}
 
 //Add
 plus.addEventListener('click', () => {
   currentOperator = 'add'
   operatorList.push(currentOperator)
+  operatorLimiter()
+  console.log(operatorList)
   display.textContent += '+'
   dot.disabled = false
   if (digits.length == 1) {
     let prevOperator = operatorList[operatorList.length -2]
+    // If prev was subtract
     if(prevOperator == 'minus') {
       let split = ''
       if (display.textContent.slice(0, 1) == '-'){
@@ -117,6 +139,7 @@ plus.addEventListener('click', () => {
       digits = []
       count = display.textContent.length
     }
+    // If prev was add
     if(display.textContent.includes('+')) {
       let split = display.textContent.split('+')
       split.forEach(num => {
@@ -145,6 +168,8 @@ plus.addEventListener('click', () => {
 minus.addEventListener('click', () => {
   currentOperator = 'minus'
   operatorList.push(currentOperator)
+  operatorLimiter()
+  console.log(operatorList)
   if (display.textContent == 0) {
     display.textContent = display.textContent.slice(1)
   }
@@ -152,6 +177,7 @@ minus.addEventListener('click', () => {
   dot.disabled = false
   if (digits.length == 1) {
     let prevOperator = operatorList[operatorList.length -2]
+    // If prev was add
     if(prevOperator == 'add') {
       let split = display.textContent.split('+')
       split.forEach(num => {
@@ -168,6 +194,7 @@ minus.addEventListener('click', () => {
       digits = []
       count = display.textContent.length
     }
+    // If prev was subtract
     if(!result || result.length < display.textContent.length) {
       let split = ''
       if (display.textContent.slice(0, 1) == '-'){
@@ -206,6 +233,7 @@ minus.addEventListener('click', () => {
 })
 
 equals.addEventListener('click', () => {
+  console.log(display.textContent)
   // Addition
   if (currentOperator == 'add') {
     if (result == display.textContent) {
