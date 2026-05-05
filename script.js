@@ -233,7 +233,7 @@ minus.addEventListener('click', () => {
 })
 
 equals.addEventListener('click', () => {
-  console.log(display.textContent)
+  let toOperate = display.textContent
   // Addition
   if (currentOperator == 'add') {
     if (result == display.textContent) {
@@ -241,7 +241,8 @@ equals.addEventListener('click', () => {
       display.textContent = result
     }
     if(display.textContent.includes('+')) {
-      let split = display.textContent.split('+')
+      console.log(toOperate)
+      let split = toOperate.split('+')
       split.forEach(num => {
         digits.push(strToNum(num))
       })
