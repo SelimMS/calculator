@@ -19,6 +19,8 @@ clear.addEventListener('click', () => {
   total = 0
   count = 0
   digits = []
+  currentOperator = ''
+  operatorList = []
   a = 0
   b = 0
   display.textContent = "0"
@@ -62,14 +64,12 @@ numButtons.forEach(button => {
     })
     display.textContent += e.target.value;
     total = strToNum(display.textContent)
-    console.log(total)
     count += 1
     if (count >= 14) {
       numButtons.forEach(button => {
         button.disabled = true;
       })
     }
-    console.log(`Count: ${count}`)
   });
 })
 
@@ -78,15 +78,45 @@ let result = 0
 let a = 0
 let b = 0
 let currentOperator = ''
+let operatorList = []
 
 //Add
 plus.addEventListener('click', () => {
   currentOperator = 'add'
-  console.log(currentOperator)
+  operatorList.push(currentOperator)
   display.textContent += '+'
   dot.disabled = false
-  // digits = []
   if (digits.length == 1) {
+    let prevOperator = operatorList[operatorList.length -2]
+    if(prevOperator == 'minus') {
+      let split = ''
+      if (display.textContent.slice(0, 1) == '-'){
+        digits = []
+        display.textContent = display.textContent.slice(1)
+        split = display.textContent.split('-')
+        split[0] = -split[0]
+        split.forEach(num => {
+          digits.push(strToNum(num))
+        })
+      } else {
+        digits = []
+        split = display.textContent.split('-')
+        split.forEach(num => {
+          digits.push(strToNum(num))
+        })
+      }
+      a = digits[0]
+      b = digits[1]
+      if(b) {
+        result = operate(subtract, a, b)
+      } else {
+        b = 0
+        result = a
+      }
+      display.textContent = result + '+'
+      digits = []
+      count = display.textContent.length
+    }
     if(display.textContent.includes('+')) {
       let split = display.textContent.split('+')
       split.forEach(num => {
@@ -114,14 +144,30 @@ plus.addEventListener('click', () => {
 //Subtract
 minus.addEventListener('click', () => {
   currentOperator = 'minus'
-  console.log(currentOperator)
-  console.log(display.textContent)
+  operatorList.push(currentOperator)
   if (display.textContent == 0) {
     display.textContent = display.textContent.slice(1)
   }
   display.textContent += '-'
   dot.disabled = false
   if (digits.length == 1) {
+    let prevOperator = operatorList[operatorList.length -2]
+    if(prevOperator == 'add') {
+      let split = display.textContent.split('+')
+      split.forEach(num => {
+        digits.push(strToNum(num))
+      })
+      a = digits[0]
+      b = digits[2]
+      if(b) {
+        result = operate(add, a, b)
+      } else {
+        result = a
+      }
+      display.textContent = result + '-'
+      digits = []
+      count = display.textContent.length
+    }
     if(!result || result.length < display.textContent.length) {
       let split = ''
       if (display.textContent.slice(0, 1) == '-'){
