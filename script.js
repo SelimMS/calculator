@@ -28,50 +28,74 @@ clear.addEventListener('click', () => {
   numButtons.forEach(button => {
     button.disabled = false;
   })
+  operators.forEach(button => {
+    button.disabled = false;
+  })
 })
 
 backspace.addEventListener('click', () => {
-  display.textContent = display.textContent.slice(0, -1);
-  count -= 1;
-  numButtons.forEach(button => {
-    button.disabled = false;
-  })
-  if (display.textContent.includes('.')) {
-    dot.disabled = true;
+  if (display.textContent == 'Infinity') {
+
+  } else {
+    if (display.textContent != 'Cannot divide by 0') {
+      display.textContent = display.textContent.slice(0, -1);
+      count -= 1;
+      numButtons.forEach(button => {
+        button.disabled = false;
+      })
+      if (display.textContent.includes('.')) {
+        dot.disabled = true;
+      }
+    }
   }
 })
 
 function toggleMinus() {
-  if (digits.length == 1) {
-    if (display.textContent.includes('+')){
-      let split = ''
-      split = display.textContent.split('+')
-      result = split[0] + '+-' + split[1]
-      display.textContent = result
-      total = strToNum(display.textContent)
-      if (display.textContent.includes('--')) {
-        display.textContent = display.textContent.replace('--', '')
-        total = strToNum(display.textContent)
-      }
-    }
-    if (display.textContent.includes('×')){
-      let split = ''
-      split = display.textContent.split('×')
-      result = split[0] + '×-' + split[1]
-      display.textContent = result
-      total = strToNum(display.textContent)
-      if (display.textContent.includes('--')) {
-        display.textContent = display.textContent.replace('--', '')
-        total = strToNum(display.textContent)
-      }
-    }
+  if (display.textContent == 'Cannot divide by 0') {
+
   } else {
-    let prev = display.textContent
-    display.textContent = '-' + display.textContent
-    total = strToNum(display.textContent)
-    if (display.textContent.includes('--')) {
-      display.textContent = display.textContent.slice(2)
+    if (digits.length == 1) {
+      if (display.textContent.includes('+')){
+        let split = ''
+        split = display.textContent.split('+')
+        result = split[0] + '+-' + split[1]
+        display.textContent = result
+        total = strToNum(display.textContent)
+        if (display.textContent.includes('--')) {
+          display.textContent = display.textContent.replace('--', '')
+          total = strToNum(display.textContent)
+        }
+      }
+      if (display.textContent.includes('×')){
+        let split = ''
+        split = display.textContent.split('×')
+        result = split[0] + '×-' + split[1]
+        display.textContent = result
+        total = strToNum(display.textContent)
+        if (display.textContent.includes('--')) {
+          display.textContent = display.textContent.replace('--', '')
+          total = strToNum(display.textContent)
+        }
+      }
+      if (display.textContent.includes('÷')){
+        let split = ''
+        split = display.textContent.split('÷')
+        result = split[0] + '÷-' + split[1]
+        display.textContent = result
+        total = strToNum(display.textContent)
+        if (display.textContent.includes('--')) {
+          display.textContent = display.textContent.replace('--', '')
+          total = strToNum(display.textContent)
+        }
+      }
+    } else {
+      let prev = display.textContent
+      display.textContent = '-' + display.textContent
       total = strToNum(display.textContent)
+      if (display.textContent.includes('--')) {
+        display.textContent = display.textContent.slice(2)
+        total = strToNum(display.textContent)
+      }
     }
   }
 }
@@ -81,19 +105,25 @@ plusminus.addEventListener('click', toggleMinus)
 const numButtons = document.querySelectorAll('.num button')
 numButtons.forEach(button => {
   button.addEventListener('click', (e) => {
-    if (display.textContent === '0') {
-      display.textContent = ''
-    }
-    dot.addEventListener('click', () => {
-      dot.disabled = true;
-    })
-    display.textContent += e.target.value;
-    total = strToNum(display.textContent)
-    count += 1
-    if (count >= 14) {
-      numButtons.forEach(button => {
-        button.disabled = true;
+    if (display.textContent == 'Cannot divide by 0') {
+      button.disabled = true;
+    } else if (display.textContent == 'Infinity'){
+      button.disabled = true;
+    } else {
+      if (display.textContent === '0') {
+        display.textContent = ''
+      }
+      dot.addEventListener('click', () => {
+        dot.disabled = true;
       })
+      display.textContent += e.target.value;
+      total = strToNum(display.textContent)
+      count += 1
+      if (count >= 14) {
+        numButtons.forEach(button => {
+          button.disabled = true;
+        })
+      }
     }
   });
 })
@@ -109,6 +139,15 @@ const operatorLimiter = () => {
     operatorList.shift()
   }
 }
+
+operators.forEach(button => {
+  button.addEventListener('click', () => {
+    count = (count / 2) + 1
+    numButtons.forEach(button => {
+      button.disabled = false;
+    })
+  })
+})
 
 // Add
 plus.addEventListener('click', () => {
@@ -181,6 +220,27 @@ plus.addEventListener('click', () => {
         result = a
       }
       display.textContent = result + '+'
+      digits = []
+      count = display.textContent.length
+    }
+    // If prev was divide
+    if(prevOperator == 'divide') {
+      let split = display.textContent.split('÷')
+      split.forEach(num => {
+        digits.push(strToNum(num))
+      })
+      a = digits[0]
+      b = digits[2]
+      if(b) {
+        result = operate(divide, a, b)
+        display.textContent = result + '+'
+      } else {
+        result = 'Cannot divide by 0'
+        operators.forEach(button => {
+          button.disabled = true;
+        })
+        display.textContent = result
+      }
       digits = []
       count = display.textContent.length
     }
@@ -269,6 +329,27 @@ minus.addEventListener('click', () => {
       digits = []
       count = display.textContent.length
     }
+    // If prev was divide
+    if(prevOperator == 'divide') {
+      let split = display.textContent.split('÷')
+      split.forEach(num => {
+        digits.push(strToNum(num))
+      })
+      a = digits[0]
+      b = digits[2]
+      if(b) {
+        result = operate(divide, a, b)
+        display.textContent = result + '-'
+      } else {
+        result = 'Cannot divide by 0'
+        operators.forEach(button => {
+          button.disabled = true;
+        })
+        display.textContent = result
+      }
+      digits = []
+      count = display.textContent.length
+    }
   }
   if(display.textContent.includes('--')) {
     display.textContent = display.textContent.slice(0, -1)
@@ -351,6 +432,27 @@ times.addEventListener('click', () => {
       digits = []
       count = display.textContent.length
     }
+    // If prev was divide
+    if(prevOperator == 'divide') {
+      let split = display.textContent.split('÷')
+      split.forEach(num => {
+        digits.push(strToNum(num))
+      })
+      a = digits[0]
+      b = digits[2]
+      if(b) {
+        result = operate(divide, a, b)
+        display.textContent = result + '×'
+      } else {
+        result = 'Cannot divide by 0'
+        operators.forEach(button => {
+          button.disabled = true;
+        })
+        display.textContent = result
+      }
+      digits = []
+      count = display.textContent.length
+    }
   }
   if(display.textContent.includes('××')) {
     display.textContent = display.textContent.slice(0, -1)
@@ -358,6 +460,110 @@ times.addEventListener('click', () => {
   total = strToNum(display.textContent)
   digits.push(total)
 })
+
+// Divide
+division.addEventListener('click', () => {
+  currentOperator = 'divide'
+  operatorList.push(currentOperator)
+  operatorLimiter()
+  console.log(operatorList)
+  display.textContent += '÷'
+  dot.disabled = false
+  if (digits.length == 1) {
+    let prevOperator = operatorList[operatorList.length -2]
+    // If prev was subtract
+    if(prevOperator == 'minus') {
+      let split = ''
+      if (display.textContent.slice(0, 1) == '-'){
+        digits = []
+        display.textContent = display.textContent.slice(1)
+        split = display.textContent.split('-')
+        split[0] = -split[0]
+        split.forEach(num => {
+          digits.push(strToNum(num))
+        })
+      } else {
+        digits = []
+        split = display.textContent.split('-')
+        split.forEach(num => {
+          digits.push(strToNum(num))
+        })
+      }
+      a = digits[0]
+      b = digits[1]
+      if(b) {
+        result = operate(subtract, a, b)
+      } else {
+        b = 0
+        result = a
+      }
+      display.textContent = result + '÷'
+      digits = []
+      count = display.textContent.length
+    }
+    // If prev was add
+    if(prevOperator == 'add') {
+      let split = display.textContent.split('+')
+      split.forEach(num => {
+        digits.push(strToNum(num))
+      })
+      a = digits[0]
+      b = digits[2]
+      if(b) {
+        result = operate(add, a, b)
+      } else {
+        result = a
+      }
+      display.textContent = result + '÷'
+      digits = []
+      count = display.textContent.length
+    }
+    // If prev was times
+    if(prevOperator == 'times') {
+      let split = display.textContent.split('×')
+      split.forEach(num => {
+        digits.push(strToNum(num))
+      })
+      a = digits[0]
+      b = digits[2]
+      if(b) {
+        result = operate(multiply, a, b)
+      } else {
+        result = a
+      }
+      display.textContent = result + '÷'
+      digits = []
+      count = display.textContent.length
+    }
+    // If prev was divide
+    if(prevOperator == 'divide') {
+      let split = display.textContent.split('÷')
+      split.forEach(num => {
+        digits.push(strToNum(num))
+      })
+      a = digits[0]
+      b = digits[2]
+      if(b) {
+        result = operate(divide, a, b)
+        display.textContent = result + '÷'
+      } else {
+        result = 'Cannot divide by 0'
+        operators.forEach(button => {
+          button.disabled = true;
+        })
+        display.textContent = result
+      }
+      digits = []
+      count = display.textContent.length
+    }
+  }
+  if(display.textContent.includes('÷÷')) {
+    display.textContent = display.textContent.slice(0, -1)
+  }
+  total = strToNum(display.textContent)
+  digits.push(total)
+})
+
 
 // Equals
 equals.addEventListener('click', () => {
@@ -428,7 +634,7 @@ equals.addEventListener('click', () => {
       result *= b
       display.textContent = result
     }
-    if(display.textContent.includes('×')) {
+    if(toOperate.includes('×')) {
       let split = toOperate.split('×')
       split.forEach(num => {
         digits.push(strToNum(num))
@@ -440,6 +646,34 @@ equals.addEventListener('click', () => {
       } else {
         b = 0
         result = a
+      }
+      display.textContent = result
+      digits = []
+      count = display.textContent.length
+    }
+  }
+  // Division
+  if (currentOperator == 'divide') {
+    if (result == display.textContent) {
+      result /= b
+      display.textContent = result
+    }
+    if(toOperate.includes('÷')) {
+      let split = toOperate.split('÷')
+      split.forEach(num => {
+        digits.push(strToNum(num))
+      })
+      a = digits[0]
+      b = digits[2]
+      console.log(b)
+      if(b) {
+        result = operate(divide, a, b)
+      } else {
+        b = 0
+        result = 'Cannot divide by 0'
+        operators.forEach(button => {
+          button.disabled = true;
+        })
       }
       display.textContent = result
       digits = []
@@ -467,9 +701,11 @@ function multiply(a, b) {
 
 function divide(a, b) {
   if (b == 0) {
-    return "Cannot divide by 0"
+    console.log('test')
+    display.textContent = "Cannot divide by 0"
+  } else {
+    return a / b;
   }
-  return a / b;
 }
 
 function percentage(a) {
