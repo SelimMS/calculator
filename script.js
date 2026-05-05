@@ -16,14 +16,16 @@ display.textContent = "0"
 let count = 0
 
 clear.addEventListener('click', () => {
-  // total = 0
-  // count = 0
-  // display.textContent = "0"
-  // dot.disabled = false;
-  // numButtons.forEach(button => {
-  //   button.disabled = false;
-  // })
-  location.reload()
+  total = 0
+  count = 0
+  digits = []
+  a = 0
+  b = 0
+  display.textContent = "0"
+  dot.disabled = false;
+  numButtons.forEach(button => {
+    button.disabled = false;
+  })
 })
 
 backspace.addEventListener('click', () => {
@@ -75,10 +77,15 @@ let digits = []
 let result = 0
 let a = 0
 let b = 0
+let currentOperator = ''
 
+//Add
 plus.addEventListener('click', () => {
+  currentOperator = 'add'
+  console.log(currentOperator)
   display.textContent += '+'
   dot.disabled = false
+  // digits = []
   if (digits.length == 1) {
     if(display.textContent.includes('+')) {
       let split = display.textContent.split('+')
@@ -89,6 +96,8 @@ plus.addEventListener('click', () => {
       b = digits[2]
       if(b) {
         result = operate(add, a, b)
+      } else {
+        result = a
       }
       display.textContent = result + '+'
       digits = []
@@ -102,23 +111,117 @@ plus.addEventListener('click', () => {
   digits.push(total)
 })
 
+//Subtract
+minus.addEventListener('click', () => {
+  currentOperator = 'minus'
+  console.log(currentOperator)
+  console.log(display.textContent)
+  if (display.textContent == 0) {
+    display.textContent = display.textContent.slice(1)
+  }
+  display.textContent += '-'
+  dot.disabled = false
+  if (digits.length == 1) {
+    if(!result || result.length < display.textContent.length) {
+      let split = ''
+      if (display.textContent.slice(0, 1) == '-'){
+        digits = []
+        display.textContent = display.textContent.slice(1)
+        split = display.textContent.split('-')
+        split[0] = -split[0]
+        split.forEach(num => {
+          digits.push(strToNum(num))
+        })
+      } else {
+        digits = []
+        split = display.textContent.split('-')
+        split.forEach(num => {
+          digits.push(strToNum(num))
+        })
+      }
+      a = digits[0]
+      b = digits[1]
+      if(b) {
+        result = operate(subtract, a, b)
+      } else {
+        b = 0
+        result = a
+      }
+      display.textContent = result + '-'
+      digits = []
+      count = display.textContent.length
+    }
+  }
+  if(display.textContent.includes('--')) {
+    display.textContent = display.textContent.slice(0, -1)
+  }
+  total = strToNum(display.textContent)
+  digits.push(total)
+})
+
 equals.addEventListener('click', () => {
   // Addition
-  if(display.textContent.includes('+')) {
-    let split = display.textContent.split('+')
-    split.forEach(num => {
-      digits.push(strToNum(num))
-    })
-    a = digits[0]
-    b = digits[2]
-    result = operate(add, a, b)
-    display.textContent = result
-    digits = []
-    count = display.textContent.length
+  if (currentOperator == 'add') {
+    if (result == display.textContent) {
+      result += b
+      display.textContent = result
+    }
+    if(display.textContent.includes('+')) {
+      let split = display.textContent.split('+')
+      split.forEach(num => {
+        digits.push(strToNum(num))
+      })
+      a = digits[0]
+      b = digits[2]
+      if(b) {
+        result = operate(add, a, b)
+      } else {
+        b = 0
+        result = a
+      }
+      display.textContent = result
+      digits = []
+      count = display.textContent.length
+    }
   }
   // Subtraction
+  if (currentOperator == 'minus') {
+    digits = []
+    if (result == display.textContent) {
+      result -= b
+      display.textContent = result
+    } else {      
+      let split = ''
+      if (display.textContent.slice(0, 1) == '-'){
+        digits = []
+        display.textContent = display.textContent.slice(1)
+        split = display.textContent.split('-')
+        split[0] = -split[0]
+        split.forEach(num => {
+          digits.push(strToNum(num))
+        })
+      } else {
+        digits = []
+        split = display.textContent.split('-')
+        split.forEach(num => {
+          digits.push(strToNum(num))
+        })
+      }
+      a = digits[0]
+      b = digits[1]
+      if(b) {
+        result = operate(subtract, a, b)
+      } else {
+        b = 0
+        result = a
+      }
+      display.textContent = result
+      digits = []
+      count = display.textContent.length
+    }
+  }
 })
-  
+
 function strToNum(str) {
   const num = parseFloat(str)
   return num
