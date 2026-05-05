@@ -54,6 +54,17 @@ function toggleMinus() {
         total = strToNum(display.textContent)
       }
     }
+    if (display.textContent.includes('×')){
+      let split = ''
+      split = display.textContent.split('×')
+      result = split[0] + '×-' + split[1]
+      display.textContent = result
+      total = strToNum(display.textContent)
+      if (display.textContent.includes('--')) {
+        display.textContent = display.textContent.replace('--', '')
+        total = strToNum(display.textContent)
+      }
+    }
   } else {
     let prev = display.textContent
     display.textContent = '-' + display.textContent
@@ -99,7 +110,7 @@ const operatorLimiter = () => {
   }
 }
 
-//Add
+// Add
 plus.addEventListener('click', () => {
   currentOperator = 'add'
   operatorList.push(currentOperator)
@@ -140,7 +151,7 @@ plus.addEventListener('click', () => {
       count = display.textContent.length
     }
     // If prev was add
-    if(display.textContent.includes('+')) {
+    if(prevOperator == 'add') {
       let split = display.textContent.split('+')
       split.forEach(num => {
         digits.push(strToNum(num))
@@ -156,6 +167,23 @@ plus.addEventListener('click', () => {
       digits = []
       count = display.textContent.length
     }
+    // If prev was times
+    if(prevOperator == 'times') {
+      let split = display.textContent.split('×')
+      split.forEach(num => {
+        digits.push(strToNum(num))
+      })
+      a = digits[0]
+      b = digits[2]
+      if(b) {
+        result = operate(multiply, a, b)
+      } else {
+        result = a
+      }
+      display.textContent = result + '+'
+      digits = []
+      count = display.textContent.length
+    }
   }
   if(display.textContent.includes('++')) {
     display.textContent = display.textContent.slice(0, -1)
@@ -164,7 +192,7 @@ plus.addEventListener('click', () => {
   digits.push(total)
 })
 
-//Subtract
+// Subtract
 minus.addEventListener('click', () => {
   currentOperator = 'minus'
   operatorList.push(currentOperator)
@@ -224,6 +252,23 @@ minus.addEventListener('click', () => {
       digits = []
       count = display.textContent.length
     }
+    // If prev was times
+    if(prevOperator == 'times') {
+      let split = display.textContent.split('×')
+      split.forEach(num => {
+        digits.push(strToNum(num))
+      })
+      a = digits[0]
+      b = digits[2]
+      if(b) {
+        result = operate(multiply, a, b)
+      } else {
+        result = a
+      }
+      display.textContent = result + '-'
+      digits = []
+      count = display.textContent.length
+    }
   }
   if(display.textContent.includes('--')) {
     display.textContent = display.textContent.slice(0, -1)
@@ -232,6 +277,89 @@ minus.addEventListener('click', () => {
   digits.push(total)
 })
 
+// Multiply
+times.addEventListener('click', () => {
+  currentOperator = 'times'
+  operatorList.push(currentOperator)
+  operatorLimiter()
+  console.log(operatorList)
+  display.textContent += '×'
+  dot.disabled = false
+  if (digits.length == 1) {
+    let prevOperator = operatorList[operatorList.length -2]
+    // If prev was subtract
+    if(prevOperator == 'minus') {
+      let split = ''
+      if (display.textContent.slice(0, 1) == '-'){
+        digits = []
+        display.textContent = display.textContent.slice(1)
+        split = display.textContent.split('-')
+        split[0] = -split[0]
+        split.forEach(num => {
+          digits.push(strToNum(num))
+        })
+      } else {
+        digits = []
+        split = display.textContent.split('-')
+        split.forEach(num => {
+          digits.push(strToNum(num))
+        })
+      }
+      a = digits[0]
+      b = digits[1]
+      if(b) {
+        result = operate(subtract, a, b)
+      } else {
+        b = 0
+        result = a
+      }
+      display.textContent = result + '×'
+      digits = []
+      count = display.textContent.length
+    }
+    // If prev was add
+    if(prevOperator == 'add') {
+      let split = display.textContent.split('+')
+      split.forEach(num => {
+        digits.push(strToNum(num))
+      })
+      a = digits[0]
+      b = digits[2]
+      if(b) {
+        result = operate(add, a, b)
+      } else {
+        result = a
+      }
+      display.textContent = result + '×'
+      digits = []
+      count = display.textContent.length
+    }
+    // If prev was times
+    if(prevOperator == 'times') {
+      let split = display.textContent.split('×')
+      split.forEach(num => {
+        digits.push(strToNum(num))
+      })
+      a = digits[0]
+      b = digits[2]
+      if(b) {
+        result = operate(multiply, a, b)
+      } else {
+        result = a
+      }
+      display.textContent = result + '×'
+      digits = []
+      count = display.textContent.length
+    }
+  }
+  if(display.textContent.includes('××')) {
+    display.textContent = display.textContent.slice(0, -1)
+  }
+  total = strToNum(display.textContent)
+  digits.push(total)
+})
+
+// Equals
 equals.addEventListener('click', () => {
   let toOperate = display.textContent
   // Addition
@@ -241,7 +369,6 @@ equals.addEventListener('click', () => {
       display.textContent = result
     }
     if(display.textContent.includes('+')) {
-      console.log(toOperate)
       let split = toOperate.split('+')
       split.forEach(num => {
         digits.push(strToNum(num))
@@ -286,6 +413,30 @@ equals.addEventListener('click', () => {
       b = digits[1]
       if(b) {
         result = operate(subtract, a, b)
+      } else {
+        b = 0
+        result = a
+      }
+      display.textContent = result
+      digits = []
+      count = display.textContent.length
+    }
+  }
+  // Multiplication
+  if (currentOperator == 'times') {
+    if (result == display.textContent) {
+      result *= b
+      display.textContent = result
+    }
+    if(display.textContent.includes('×')) {
+      let split = toOperate.split('×')
+      split.forEach(num => {
+        digits.push(strToNum(num))
+      })
+      a = digits[0]
+      b = digits[2]
+      if(b) {
+        result = operate(multiply, a, b)
       } else {
         b = 0
         result = a
