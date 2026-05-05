@@ -195,7 +195,7 @@ minus.addEventListener('click', () => {
       count = display.textContent.length
     }
     // If prev was subtract
-    if(!result || result.length < display.textContent.length) {
+    if(prevOperator == 'minus') {
       let split = ''
       if (display.textContent.slice(0, 1) == '-'){
         digits = []
