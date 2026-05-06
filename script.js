@@ -17,7 +17,6 @@ let count = 0
 
 document.addEventListener("keydown", (event) => {
   const keyName = event.key
-  console.log(keyName)
   if (keyName == 'c') {
     clearCalc()
   }
@@ -328,7 +327,6 @@ function plusClick() {
   currentOperator = 'add'
   operatorList.push(currentOperator)
   operatorLimiter()
-  console.log(operatorList)
   display.textContent += '+'
   dot.disabled = false
   if (digits.length == 1) {
@@ -391,7 +389,6 @@ function minusClick() {
   currentOperator = 'minus'
   operatorList.push(currentOperator)
   operatorLimiter()
-  console.log(operatorList)
   if (display.textContent == 0) {
     display.textContent = display.textContent.slice(1)
   }
@@ -475,7 +472,6 @@ function timesClick() {
   currentOperator = 'times'
   operatorList.push(currentOperator)
   operatorLimiter()
-  console.log(operatorList)
   display.textContent += '×'
   dot.disabled = false
   if (digits.length == 1) {
@@ -538,7 +534,6 @@ function divideClick() {
   currentOperator = 'divide'
   operatorList.push(currentOperator)
   operatorLimiter()
-  console.log(operatorList)
   display.textContent += '÷'
   dot.disabled = false
   if (digits.length == 1) {
@@ -674,7 +669,6 @@ function equalsClick() {
           }
         })
       }
-      console.log(digits)
       a = digits[0]
       b = digits[1]
       if(b) {
@@ -704,7 +698,6 @@ function equalsClick() {
           digits.push(strToNum(num))
         }
       })
-      console.log(digits)
       a = digits[1]
       b = digits[2]
       if(b) {
@@ -734,7 +727,6 @@ function equalsClick() {
           digits.push(strToNum(num))
         }
       })
-      console.log(digits)
       a = digits[1]
       b = digits[2]
       if(b) {
