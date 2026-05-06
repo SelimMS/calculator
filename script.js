@@ -12,7 +12,7 @@ const display = document.querySelector(".calc-display")
 const operators = document.querySelectorAll(".operator button")
 
 let total = 0
-display.textContent = "0"
+display.textContent = 0
 let count = 0
 
 clear.addEventListener('click', () => {
@@ -43,9 +43,6 @@ backspace.addEventListener('click', () => {
       numButtons.forEach(button => {
         button.disabled = false;
       })
-      if (display.textContent.includes('.')) {
-        dot.disabled = true;
-      }
     }
   }
 })
@@ -102,6 +99,10 @@ function toggleMinus() {
 
 plusminus.addEventListener('click', toggleMinus)
 
+dot.addEventListener('click', () => {
+  dot.disabled = true;
+})
+
 const numButtons = document.querySelectorAll('.num button')
 numButtons.forEach(button => {
   button.addEventListener('click', (e) => {
@@ -113,9 +114,6 @@ numButtons.forEach(button => {
       if (display.textContent === '0') {
         display.textContent = ''
       }
-      dot.addEventListener('click', () => {
-        dot.disabled = true;
-      })
       display.textContent += e.target.value;
       total = strToNum(display.textContent)
       count += 1
@@ -701,7 +699,6 @@ function multiply(a, b) {
 
 function divide(a, b) {
   if (b == 0) {
-    console.log('test')
     display.textContent = "Cannot divide by 0"
   } else {
     return a / b;
