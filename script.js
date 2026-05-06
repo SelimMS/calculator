@@ -15,36 +15,104 @@ let total = 0
 display.textContent = 0
 let count = 0
 
+document.addEventListener("keydown", (event) => {
+  const keyName = event.key
+  console.log(keyName)
+  if (keyName == 'c') {
+    clearCalc()
+  }
+  if (display.textContent == 'Cannot divide by 0') {
+
+  } else {
+    if (keyName == 'Backspace') {
+      bSpace()
+    }
+    if (keyName == '.') {
+      display.textContent += '.'
+      if (display.textContent.includes('..')) {
+        display.textContent = display.textContent.slice(0, -1)
+      }
+    }
+    if (keyName == '+') {
+      plusClick()
+      count -= 2
+    }
+    if (keyName == '-') {
+      minusClick()
+    }
+    if (keyName == '*') {
+      timesClick()
+    }
+    if (keyName == '/') {
+      divideClick()
+    }
+    if (keyName == '%') {
+      display.textContent = display.textContent + '%'
+      if (display.textContent.includes('%%')) {
+        display.textContent = display.textContent.slice(0, -1)
+      }
+    }
+    if (keyName == '=' || keyName == 'Enter') {
+      equalsClick()
+    }
+    if (count <= 13) {
+      if (keyName == '+' || keyName == '-' || keyName == '/' || keyName == '*') {
+        count = (count / 2) + 1
+      } else {
+        if (display.textContent == 0) {
+          display.textContent = display.textContent.slice(0, -1)
+        }
+        if (keyName == '1') {
+          display.textContent += 1
+          count += 1
+        }
+        if (keyName == '2') {
+          display.textContent += 2
+          count += 1
+        }
+        if (keyName == '3') {
+          display.textContent += 3
+          count += 1
+        }
+        if (keyName == '4') {
+          display.textContent += 4
+          count += 1
+        }
+        if (keyName == '5') {
+          display.textContent += 5
+          count += 1
+        }
+        if (keyName == '6') {
+          display.textContent += 6
+          count += 1
+        }
+        if (keyName == '7') {
+          display.textContent += 7
+          count += 1
+        }
+        if (keyName == '8') {
+          display.textContent += 8
+          count += 1
+        }
+        if (keyName == '9') {
+          display.textContent += 9
+          count += 1
+        }
+        if (keyName == '0') {
+          display.textContent += 0
+          count += 1
+        }
+      }
+    }
+  }
+})
+
 clear.addEventListener('click', () => {
-  total = 0
-  count = 0
-  digits = []
-  currentOperator = ''
-  operatorList = []
-  a = 0
-  b = 0
-  display.textContent = "0"
-  dot.disabled = false;
-  numButtons.forEach(button => {
-    button.disabled = false;
-  })
-  operators.forEach(button => {
-    button.disabled = false;
-  })
+  clearCalc()
 })
 
 backspace.addEventListener('click', () => {
-  if (display.textContent == 'Infinity') {
-
-  } else {
-    if (display.textContent != 'Cannot divide by 0') {
-      display.textContent = display.textContent.slice(0, -1);
-      count -= 1;
-      numButtons.forEach(button => {
-        button.disabled = false;
-      })
-    }
-  }
+  bSpace()
 })
 
 function toggleMinus() {
@@ -149,6 +217,114 @@ operators.forEach(button => {
 
 // Add
 plus.addEventListener('click', () => {
+  plusClick()
+})
+
+// Subtract
+minus.addEventListener('click', () => {
+  minusClick()
+})
+
+// Multiply
+times.addEventListener('click', () => {
+  timesClick()
+})
+
+// Divide
+division.addEventListener('click', () => {
+  divideClick()
+})
+
+// Percentage
+percent.addEventListener('click', ()=> {
+  display.textContent = display.textContent + '%'
+  if (display.textContent.includes('%%')) {
+    display.textContent = display.textContent.slice(0, -1)
+  }
+})
+
+// Equals
+equals.addEventListener('click', () => {
+  equalsClick()
+})
+
+function clearCalc() {
+  display.textContent = 0
+  total = 0
+  count = 0
+  digits = []
+  currentOperator = ''
+  operatorList = []
+  a = 0
+  b = 0
+  dot.disabled = false;
+  numButtons.forEach(button => {
+    button.disabled = false;
+  })
+  operators.forEach(button => {
+    button.disabled = false;
+  })
+}
+
+function bSpace() {
+  if (display.textContent == 'Infinity') {
+
+  } else {
+    if (display.textContent != 'Cannot divide by 0') {
+      display.textContent = display.textContent.slice(0, -1);
+      count -= 1;
+      numButtons.forEach(button => {
+        button.disabled = false;
+      })
+    }
+  }
+}
+
+function strToNum(str) {
+  const num = parseFloat(str)
+  return num
+}
+
+function add(a, b) {
+  return a + b;
+}
+
+function subtract(a, b) {
+  return a - b;
+}
+
+function multiply(a, b) {
+  return a * b;
+}
+
+function divide(a, b) {
+  if (b == 0) {
+    display.textContent = "Cannot divide by 0"
+  } else {
+    return a / b;
+  }
+}
+
+function percentage(a) {
+  return a / 100
+}
+
+function operate(operator, a, b) {
+  if (operator == add) {
+    return add(a, b)
+  }
+  if (operator == subtract) {
+    return subtract(a, b)
+  }
+  if (operator == divide) {
+    return divide(a, b)
+  }
+  if (operator == multiply) {
+    return multiply(a, b)
+  }
+}
+
+function plusClick() {
   currentOperator = 'add'
   operatorList.push(currentOperator)
   operatorLimiter()
@@ -190,10 +366,28 @@ plus.addEventListener('click', () => {
   }
   total = strToNum(display.textContent)
   digits.push(total)
-})
+}
 
-// Subtract
-minus.addEventListener('click', () => {
+function fullAddition() {
+  let split = display.textContent.split('+')
+  split.forEach(num => {
+    if(num.includes('%')) {
+      sliced = strToNum(num.slice(0, -1))
+      digits.push(strToNum(percentage(sliced)))
+    } else {
+      digits.push(strToNum(num))
+    }
+  })
+  a = digits[1]
+  b = digits[2]
+  if(b) {
+    result = operate(add, a, b)
+  } else {
+    result = a
+  }
+}
+
+function minusClick() {
   currentOperator = 'minus'
   operatorList.push(currentOperator)
   operatorLimiter()
@@ -238,10 +432,46 @@ minus.addEventListener('click', () => {
   }
   total = strToNum(display.textContent)
   digits.push(total)
-})
+}
 
-// Multiply
-times.addEventListener('click', () => {
+function fullSubtraction() {
+  let split = ''
+  if (display.textContent.slice(0, 1) == '-'){
+    digits = []
+    display.textContent = display.textContent.slice(1)
+    split = display.textContent.split('-')
+    split[0] = -split[0]
+    split.forEach(num => {
+      if(num.includes('%')) {
+        sliced = strToNum(num.slice(0, -1))
+        digits.push(strToNum(percentage(sliced)))
+      } else {
+        digits.push(strToNum(num))
+      }
+    })
+  } else {
+    digits = []
+    split = display.textContent.split('-')
+    split.forEach(num => {
+      if(num.includes('%')) {
+        sliced = strToNum(num.slice(0, -1))
+        digits.push(strToNum(percentage(sliced)))
+      } else {
+        digits.push(strToNum(num))
+      }
+    })
+  }
+  a = digits[0]
+  b = digits[1]
+  if(b) {
+    result = operate(subtract, a, b)
+  } else {
+    b = 0
+    result = a
+  }
+}
+
+function timesClick() {
   currentOperator = 'times'
   operatorList.push(currentOperator)
   operatorLimiter()
@@ -283,10 +513,28 @@ times.addEventListener('click', () => {
   }
   total = strToNum(display.textContent)
   digits.push(total)
-})
+}
 
-// Divide
-division.addEventListener('click', () => {
+function fullMultiplication() {
+  let split = display.textContent.split('×')
+  split.forEach(num => {
+    if(num.includes('%')) {
+      sliced = strToNum(num.slice(0, -1))
+      digits.push(strToNum(percentage(sliced)))
+    } else {
+      digits.push(strToNum(num))
+    }
+  })
+  a = digits[1]
+  b = digits[2]
+  if(b) {
+    result = operate(multiply, a, b)
+  } else {
+    result = 0
+  }
+}
+
+function divideClick() {
   currentOperator = 'divide'
   operatorList.push(currentOperator)
   operatorLimiter()
@@ -328,15 +576,41 @@ division.addEventListener('click', () => {
   }
   total = strToNum(display.textContent)
   digits.push(total)
-})
+}
 
-// Percentage
-percent.addEventListener('click', ()=> {
-  display.textContent = display.textContent + '%'
-})
+function fullDivision() {
+  let split = display.textContent.split('÷')
+  split.forEach(num => {
+    if(num.includes('%')) {
+      sliced = strToNum(num.slice(0, -1))
+      digits.push(strToNum(percentage(sliced)))
+    } else {
+      digits.push(strToNum(num))
+    }
+  })
+  a = digits[1]
+  b = digits[2]
+  if(b) {
+    result = operate(divide, a, b)
+    if (currentOperator == 'add') {
+      display.textContent = result + '+'
+    } else if (currentOperator == 'minus') {
+      display.textContent = result + '-'
+    } else if (currentOperator == 'times') {
+      display.textContent = result + '×'
+    } else if (currentOperator == 'divide') {
+      display.textContent = result + '÷'
+    }
+  } else {
+    result = 'Cannot divide by 0'
+    operators.forEach(button => {
+      button.disabled = true;
+    })
+    display.textContent = result
+  }
+}
 
-// Equals
-equals.addEventListener('click', () => {
+function equalsClick() {
   let toOperate = display.textContent
   // Addition
   if (currentOperator == 'add') {
@@ -476,156 +750,5 @@ equals.addEventListener('click', () => {
       digits = []
       count = display.textContent.length
     }
-  }
-})
-
-function strToNum(str) {
-  const num = parseFloat(str)
-  return num
-}
-
-function add(a, b) {
-  return a + b;
-}
-
-function subtract(a, b) {
-  return a - b;
-}
-
-function multiply(a, b) {
-  return a * b;
-}
-
-function divide(a, b) {
-  if (b == 0) {
-    display.textContent = "Cannot divide by 0"
-  } else {
-    return a / b;
-  }
-}
-
-function percentage(a) {
-  return a / 100
-}
-
-function operate(operator, a, b) {
-  if (operator == add) {
-    return add(a, b)
-  }
-  if (operator == subtract) {
-    return subtract(a, b)
-  }
-  if (operator == divide) {
-    return divide(a, b)
-  }
-  if (operator == multiply) {
-    return multiply(a, b)
-  }
-}
-
-function fullAddition() {
-  let split = display.textContent.split('+')
-  split.forEach(num => {
-    if(num.includes('%')) {
-      sliced = strToNum(num.slice(0, -1))
-      digits.push(strToNum(percentage(sliced)))
-    } else {
-      digits.push(strToNum(num))
-    }
-  })
-  a = digits[1]
-  b = digits[2]
-  if(b) {
-    result = operate(add, a, b)
-  } else {
-    result = a
-  }
-}
-
-function fullSubtraction() {
-  let split = ''
-  if (display.textContent.slice(0, 1) == '-'){
-    digits = []
-    display.textContent = display.textContent.slice(1)
-    split = display.textContent.split('-')
-    split[0] = -split[0]
-    split.forEach(num => {
-      if(num.includes('%')) {
-        sliced = strToNum(num.slice(0, -1))
-        digits.push(strToNum(percentage(sliced)))
-      } else {
-        digits.push(strToNum(num))
-      }
-    })
-  } else {
-    digits = []
-    split = display.textContent.split('-')
-    split.forEach(num => {
-      if(num.includes('%')) {
-        sliced = strToNum(num.slice(0, -1))
-        digits.push(strToNum(percentage(sliced)))
-      } else {
-        digits.push(strToNum(num))
-      }
-    })
-  }
-  a = digits[0]
-  b = digits[1]
-  if(b) {
-    result = operate(subtract, a, b)
-  } else {
-    b = 0
-    result = a
-  }
-}
-
-function fullMultiplication() {
-  let split = display.textContent.split('×')
-  split.forEach(num => {
-    if(num.includes('%')) {
-      sliced = strToNum(num.slice(0, -1))
-      digits.push(strToNum(percentage(sliced)))
-    } else {
-      digits.push(strToNum(num))
-    }
-  })
-  a = digits[1]
-  b = digits[2]
-  if(b) {
-    result = operate(multiply, a, b)
-  } else {
-    result = 0
-  }
-}
-
-function fullDivision() {
-  let split = display.textContent.split('÷')
-  split.forEach(num => {
-    if(num.includes('%')) {
-      sliced = strToNum(num.slice(0, -1))
-      digits.push(strToNum(percentage(sliced)))
-    } else {
-      digits.push(strToNum(num))
-    }
-  })
-  a = digits[1]
-  b = digits[2]
-  if(b) {
-    result = operate(divide, a, b)
-    if (currentOperator == 'add') {
-      display.textContent = result + '+'
-    } else if (currentOperator == 'minus') {
-      display.textContent = result + '-'
-    } else if (currentOperator == 'times') {
-      display.textContent = result + '×'
-    } else if (currentOperator == 'divide') {
-      display.textContent = result + '÷'
-    }
-  } else {
-    result = 'Cannot divide by 0'
-    operators.forEach(button => {
-      button.disabled = true;
-    })
-    display.textContent = result
   }
 }
