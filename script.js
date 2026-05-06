@@ -362,6 +362,9 @@ function plusClick() {
   if(display.textContent.includes('++')) {
     display.textContent = display.textContent.slice(0, -1)
   }
+  if (display.textContent.includes('÷') || display.textContent.includes('×')) {
+    display.textContent = display.textContent.slice(0, -2) + '-'
+  }
   total = strToNum(display.textContent)
   digits.push(total)
 }
@@ -426,6 +429,9 @@ function minusClick() {
   }
   if(display.textContent.includes('--')) {
     display.textContent = display.textContent.slice(0, -1)
+  }
+  if (display.textContent.includes('÷') || display.textContent.includes('×')) {
+    display.textContent = display.textContent.slice(0, -2) + '-'
   }
   total = strToNum(display.textContent)
   digits.push(total)
@@ -505,7 +511,10 @@ function timesClick() {
     }
   }
   if(display.textContent.includes('××')) {
-    display.textContent = display.textContent.slice(0, -1)
+    display.textContent = display.textContent.slice(0, -2)
+  }
+  if (display.textContent.includes('÷')) {
+    display.textContent = display.textContent.slice(0, -2) + '×'
   }
   total = strToNum(display.textContent)
   digits.push(total)
@@ -523,10 +532,14 @@ function fullMultiplication() {
   })
   a = digits[1]
   b = digits[2]
-  if(b) {
-    result = operate(multiply, a, b)
+  if (isNaN(b)) {
+    result = display.textContent
   } else {
-    result = 0
+    if(b != 0) {
+      result = operate(multiply, a, b)
+    } else {
+      result = 0
+    }
   }
 }
 
@@ -569,12 +582,19 @@ function divideClick() {
   if(display.textContent.includes('÷÷')) {
     display.textContent = display.textContent.slice(0, -1)
   }
+  if (display.textContent.includes('÷×')) {
+    display.textContent = display.textContent.slice(0, -2)
+  }
+  if (display.textContent.includes('×')) {
+    display.textContent = display.textContent.slice(0, -2) + '÷'
+  }
   total = strToNum(display.textContent)
   digits.push(total)
 }
 
 function fullDivision() {
   let split = display.textContent.split('÷')
+  digits = []
   split.forEach(num => {
     if(num.includes('%')) {
       sliced = strToNum(num.slice(0, -1))
@@ -583,25 +603,29 @@ function fullDivision() {
       digits.push(strToNum(num))
     }
   })
-  a = digits[1]
-  b = digits[2]
-  if(b) {
-    result = operate(divide, a, b)
-    if (currentOperator == 'add') {
-      display.textContent = result + '+'
-    } else if (currentOperator == 'minus') {
-      display.textContent = result + '-'
-    } else if (currentOperator == 'times') {
-      display.textContent = result + '×'
-    } else if (currentOperator == 'divide') {
-      display.textContent = result + '÷'
-    }
+  a = digits[0]
+  b = digits[1]
+  if (isNaN(b)) {
+    result = display.textContent
   } else {
-    result = 'Cannot divide by 0'
-    operators.forEach(button => {
-      button.disabled = true;
-    })
-    display.textContent = result
+    if(b != 0) {
+      result = operate(divide, a, b)
+      if (currentOperator == 'add') {
+        display.textContent = result + '+'
+      } else if (currentOperator == 'minus') {
+        display.textContent = result + '-'
+      } else if (currentOperator == 'times') {
+        display.textContent = result + '×'
+      } else if (currentOperator == 'divide') {
+        display.textContent = result + '÷'
+      }
+    } else {
+      result = 'Cannot divide by 0'
+      operators.forEach(button => {
+        button.disabled = true;
+      })
+      display.textContent = result
+    }
   }
 }
 
@@ -616,6 +640,7 @@ function equalsClick() {
     }
     if(display.textContent.includes('+')) {
       let split = toOperate.split('+')
+      digits = []
       split.forEach(num => {
         if(num.includes('%')) {
           sliced = strToNum(num.slice(0, -1))
@@ -624,8 +649,8 @@ function equalsClick() {
           digits.push(strToNum(num))
         }
       })
-      a = digits[1]
-      b = digits[2]
+      a = digits[0]
+      b = digits[1]
       if(b) {
         result = operate(add, a, b)
       } else {
@@ -691,6 +716,7 @@ function equalsClick() {
     }
     if(toOperate.includes('×')) {
       let split = toOperate.split('×')
+      digits = []
       split.forEach(num => {
         if(num.includes('%')) {
           sliced = strToNum(num.slice(0, -1))
@@ -699,13 +725,17 @@ function equalsClick() {
           digits.push(strToNum(num))
         }
       })
-      a = digits[1]
-      b = digits[2]
-      if(b) {
-        result = operate(multiply, a, b)
+      a = digits[0]
+      b = digits[1]
+      if (isNaN(b)) {
+        result = toOperate
       } else {
-        b = 0
-        result = 0
+        if(b != 0) {
+          result = operate(multiply, a, b)
+        } else if (b == 0) {
+          b = 0
+          result = 0
+        }
       }
       display.textContent = result
       digits = []
@@ -720,6 +750,7 @@ function equalsClick() {
     }
     if(toOperate.includes('÷')) {
       let split = toOperate.split('÷')
+      digits = []
       split.forEach(num => {
         if(num.includes('%')) {
           sliced = strToNum(num.slice(0, -1))
@@ -728,16 +759,22 @@ function equalsClick() {
           digits.push(strToNum(num))
         }
       })
-      a = digits[1]
-      b = digits[2]
-      if(b) {
-        result = operate(divide, a, b)
+      a = digits[0]
+      b = digits[1]
+      console.log(a)
+      console.log(b)
+      if (isNaN(b)) {
+        result = toOperate
       } else {
-        b = 0
-        result = 'Cannot divide by 0'
-        operators.forEach(button => {
-          button.disabled = true;
-        })
+        if(b != 0) {
+          result = operate(divide, a, b)
+        } else {
+          b = 0
+          result = 'Cannot divide by 0'
+          operators.forEach(button => {
+            button.disabled = true;
+          })
+        }
       }
       display.textContent = result
       digits = []
