@@ -607,6 +607,7 @@ function fullDivision() {
 
 function equalsClick() {
   let toOperate = display.textContent
+  let lastDigit = display.textContent.slice(-1)
   // Addition
   if (currentOperator == 'add') {
     if (result == display.textContent) {
@@ -742,5 +743,15 @@ function equalsClick() {
       digits = []
       count = display.textContent.length
     }
+  }
+  // Percentage
+  if (lastDigit == '%') {
+    let split = toOperate.slice(0, -1)
+    digits.push(strToNum(split))
+    a = digits[0]
+    result = percentage(a)
+    display.textContent = result
+    digits = []
+    count = display.textContent.length
   }
 }
