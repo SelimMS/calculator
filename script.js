@@ -330,6 +330,10 @@ division.addEventListener('click', () => {
   digits.push(total)
 })
 
+// Percentage
+percent.addEventListener('click', ()=> {
+  display.textContent = display.textContent + '%'
+})
 
 // Equals
 equals.addEventListener('click', () => {
@@ -343,9 +347,14 @@ equals.addEventListener('click', () => {
     if(display.textContent.includes('+')) {
       let split = toOperate.split('+')
       split.forEach(num => {
-        digits.push(strToNum(num))
+        if(num.includes('%')) {
+          sliced = strToNum(num.slice(0, -1))
+          digits.push(strToNum(percentage(sliced)))
+        } else {
+          digits.push(strToNum(num))
+        }
       })
-      a = digits[0]
+      a = digits[1]
       b = digits[2]
       if(b) {
         result = operate(add, a, b)
@@ -372,15 +381,26 @@ equals.addEventListener('click', () => {
         split = display.textContent.split('-')
         split[0] = -split[0]
         split.forEach(num => {
-          digits.push(strToNum(num))
+          if(num.includes('%')) {
+            sliced = strToNum(num.slice(0, -1))
+            digits.push(strToNum(percentage(sliced)))
+          } else {
+            digits.push(strToNum(num))
+          }
         })
       } else {
         digits = []
         split = display.textContent.split('-')
         split.forEach(num => {
-          digits.push(strToNum(num))
+          if(num.includes('%')) {
+            sliced = strToNum(num.slice(0, -1))
+            digits.push(strToNum(percentage(sliced)))
+          } else {
+            digits.push(strToNum(num))
+          }
         })
       }
+      console.log(digits)
       a = digits[0]
       b = digits[1]
       if(b) {
@@ -403,9 +423,15 @@ equals.addEventListener('click', () => {
     if(toOperate.includes('×')) {
       let split = toOperate.split('×')
       split.forEach(num => {
-        digits.push(strToNum(num))
+        if(num.includes('%')) {
+          sliced = strToNum(num.slice(0, -1))
+          digits.push(strToNum(percentage(sliced)))
+        } else {
+          digits.push(strToNum(num))
+        }
       })
-      a = digits[0]
+      console.log(digits)
+      a = digits[1]
       b = digits[2]
       if(b) {
         result = operate(multiply, a, b)
@@ -427,11 +453,16 @@ equals.addEventListener('click', () => {
     if(toOperate.includes('÷')) {
       let split = toOperate.split('÷')
       split.forEach(num => {
-        digits.push(strToNum(num))
+        if(num.includes('%')) {
+          sliced = strToNum(num.slice(0, -1))
+          digits.push(strToNum(percentage(sliced)))
+        } else {
+          digits.push(strToNum(num))
+        }
       })
-      a = digits[0]
+      console.log(digits)
+      a = digits[1]
       b = digits[2]
-      console.log(b)
       if(b) {
         result = operate(divide, a, b)
       } else {
@@ -495,9 +526,14 @@ function operate(operator, a, b) {
 function fullAddition() {
   let split = display.textContent.split('+')
   split.forEach(num => {
-    digits.push(strToNum(num))
+    if(num.includes('%')) {
+      sliced = strToNum(num.slice(0, -1))
+      digits.push(strToNum(percentage(sliced)))
+    } else {
+      digits.push(strToNum(num))
+    }
   })
-  a = digits[0]
+  a = digits[1]
   b = digits[2]
   if(b) {
     result = operate(add, a, b)
@@ -514,13 +550,23 @@ function fullSubtraction() {
     split = display.textContent.split('-')
     split[0] = -split[0]
     split.forEach(num => {
-      digits.push(strToNum(num))
+      if(num.includes('%')) {
+        sliced = strToNum(num.slice(0, -1))
+        digits.push(strToNum(percentage(sliced)))
+      } else {
+        digits.push(strToNum(num))
+      }
     })
   } else {
     digits = []
     split = display.textContent.split('-')
     split.forEach(num => {
-      digits.push(strToNum(num))
+      if(num.includes('%')) {
+        sliced = strToNum(num.slice(0, -1))
+        digits.push(strToNum(percentage(sliced)))
+      } else {
+        digits.push(strToNum(num))
+      }
     })
   }
   a = digits[0]
@@ -536,9 +582,14 @@ function fullSubtraction() {
 function fullMultiplication() {
   let split = display.textContent.split('×')
   split.forEach(num => {
-    digits.push(strToNum(num))
+    if(num.includes('%')) {
+      sliced = strToNum(num.slice(0, -1))
+      digits.push(strToNum(percentage(sliced)))
+    } else {
+      digits.push(strToNum(num))
+    }
   })
-  a = digits[0]
+  a = digits[1]
   b = digits[2]
   if(b) {
     result = operate(multiply, a, b)
@@ -550,9 +601,14 @@ function fullMultiplication() {
 function fullDivision() {
   let split = display.textContent.split('÷')
   split.forEach(num => {
-    digits.push(strToNum(num))
+    if(num.includes('%')) {
+      sliced = strToNum(num.slice(0, -1))
+      digits.push(strToNum(percentage(sliced)))
+    } else {
+      digits.push(strToNum(num))
+    }
   })
-  a = digits[0]
+  a = digits[1]
   b = digits[2]
   if(b) {
     result = operate(divide, a, b)
