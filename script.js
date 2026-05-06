@@ -215,7 +215,7 @@ plus.addEventListener('click', () => {
       if(b) {
         result = operate(multiply, a, b)
       } else {
-        result = a
+        result = 0
       }
       display.textContent = result + '+'
       digits = []
@@ -321,7 +321,7 @@ minus.addEventListener('click', () => {
       if(b) {
         result = operate(multiply, a, b)
       } else {
-        result = a
+        result = 0
       }
       display.textContent = result + '-'
       digits = []
@@ -424,7 +424,7 @@ times.addEventListener('click', () => {
       if(b) {
         result = operate(multiply, a, b)
       } else {
-        result = a
+        result = 0
       }
       display.textContent = result + '×'
       digits = []
@@ -527,7 +527,7 @@ division.addEventListener('click', () => {
       if(b) {
         result = operate(multiply, a, b)
       } else {
-        result = a
+        result = 0
       }
       display.textContent = result + '÷'
       digits = []
@@ -643,7 +643,7 @@ equals.addEventListener('click', () => {
         result = operate(multiply, a, b)
       } else {
         b = 0
-        result = a
+        result = 0
       }
       display.textContent = result
       digits = []
