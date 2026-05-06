@@ -159,86 +159,28 @@ plus.addEventListener('click', () => {
     let prevOperator = operatorList[operatorList.length -2]
     // If prev was subtract
     if(prevOperator == 'minus') {
-      let split = ''
-      if (display.textContent.slice(0, 1) == '-'){
-        digits = []
-        display.textContent = display.textContent.slice(1)
-        split = display.textContent.split('-')
-        split[0] = -split[0]
-        split.forEach(num => {
-          digits.push(strToNum(num))
-        })
-      } else {
-        digits = []
-        split = display.textContent.split('-')
-        split.forEach(num => {
-          digits.push(strToNum(num))
-        })
-      }
-      a = digits[0]
-      b = digits[1]
-      if(b) {
-        result = operate(subtract, a, b)
-      } else {
-        b = 0
-        result = a
-      }
+      fullSubtraction()
       display.textContent = result + '+'
       digits = []
       count = display.textContent.length
     }
     // If prev was add
     if(prevOperator == 'add') {
-      let split = display.textContent.split('+')
-      split.forEach(num => {
-        digits.push(strToNum(num))
-      })
-      a = digits[0]
-      b = digits[2]
-      if(b) {
-        result = operate(add, a, b)
-      } else {
-        result = a
-      }
+      fullAddition()
       display.textContent = result + '+'
       digits = []
       count = display.textContent.length
     }
     // If prev was times
     if(prevOperator == 'times') {
-      let split = display.textContent.split('×')
-      split.forEach(num => {
-        digits.push(strToNum(num))
-      })
-      a = digits[0]
-      b = digits[2]
-      if(b) {
-        result = operate(multiply, a, b)
-      } else {
-        result = 0
-      }
+      fullMultiplication()
       display.textContent = result + '+'
       digits = []
       count = display.textContent.length
     }
     // If prev was divide
     if(prevOperator == 'divide') {
-      let split = display.textContent.split('÷')
-      split.forEach(num => {
-        digits.push(strToNum(num))
-      })
-      a = digits[0]
-      b = digits[2]
-      if(b) {
-        result = operate(divide, a, b)
-        display.textContent = result + '+'
-      } else {
-        result = 'Cannot divide by 0'
-        operators.forEach(button => {
-          button.disabled = true;
-        })
-        display.textContent = result
-      }
+      fullDivision()
       digits = []
       count = display.textContent.length
     }
@@ -265,86 +207,28 @@ minus.addEventListener('click', () => {
     let prevOperator = operatorList[operatorList.length -2]
     // If prev was add
     if(prevOperator == 'add') {
-      let split = display.textContent.split('+')
-      split.forEach(num => {
-        digits.push(strToNum(num))
-      })
-      a = digits[0]
-      b = digits[2]
-      if(b) {
-        result = operate(add, a, b)
-      } else {
-        result = a
-      }
+      fullAddition()
       display.textContent = result + '-'
       digits = []
       count = display.textContent.length
     }
     // If prev was subtract
     if(prevOperator == 'minus') {
-      let split = ''
-      if (display.textContent.slice(0, 1) == '-'){
-        digits = []
-        display.textContent = display.textContent.slice(1)
-        split = display.textContent.split('-')
-        split[0] = -split[0]
-        split.forEach(num => {
-          digits.push(strToNum(num))
-        })
-      } else {
-        digits = []
-        split = display.textContent.split('-')
-        split.forEach(num => {
-          digits.push(strToNum(num))
-        })
-      }
-      a = digits[0]
-      b = digits[1]
-      if(b) {
-        result = operate(subtract, a, b)
-      } else {
-        b = 0
-        result = a
-      }
+      fullSubtraction()
       display.textContent = result + '-'
       digits = []
       count = display.textContent.length
     }
     // If prev was times
     if(prevOperator == 'times') {
-      let split = display.textContent.split('×')
-      split.forEach(num => {
-        digits.push(strToNum(num))
-      })
-      a = digits[0]
-      b = digits[2]
-      if(b) {
-        result = operate(multiply, a, b)
-      } else {
-        result = 0
-      }
+      fullMultiplication()
       display.textContent = result + '-'
       digits = []
       count = display.textContent.length
     }
     // If prev was divide
     if(prevOperator == 'divide') {
-      let split = display.textContent.split('÷')
-      split.forEach(num => {
-        digits.push(strToNum(num))
-      })
-      a = digits[0]
-      b = digits[2]
-      if(b) {
-        result = operate(divide, a, b)
-        display.textContent = result + '-'
-      } else {
-        result = 'Cannot divide by 0'
-        operators.forEach(button => {
-          button.disabled = true;
-        })
-        display.textContent = result
-      }
+      fullDivision()
       digits = []
       count = display.textContent.length
     }
@@ -368,86 +252,28 @@ times.addEventListener('click', () => {
     let prevOperator = operatorList[operatorList.length -2]
     // If prev was subtract
     if(prevOperator == 'minus') {
-      let split = ''
-      if (display.textContent.slice(0, 1) == '-'){
-        digits = []
-        display.textContent = display.textContent.slice(1)
-        split = display.textContent.split('-')
-        split[0] = -split[0]
-        split.forEach(num => {
-          digits.push(strToNum(num))
-        })
-      } else {
-        digits = []
-        split = display.textContent.split('-')
-        split.forEach(num => {
-          digits.push(strToNum(num))
-        })
-      }
-      a = digits[0]
-      b = digits[1]
-      if(b) {
-        result = operate(subtract, a, b)
-      } else {
-        b = 0
-        result = a
-      }
+      fullSubtraction()
       display.textContent = result + '×'
       digits = []
       count = display.textContent.length
     }
     // If prev was add
     if(prevOperator == 'add') {
-      let split = display.textContent.split('+')
-      split.forEach(num => {
-        digits.push(strToNum(num))
-      })
-      a = digits[0]
-      b = digits[2]
-      if(b) {
-        result = operate(add, a, b)
-      } else {
-        result = a
-      }
+      fullAddition()
       display.textContent = result + '×'
       digits = []
       count = display.textContent.length
     }
     // If prev was times
     if(prevOperator == 'times') {
-      let split = display.textContent.split('×')
-      split.forEach(num => {
-        digits.push(strToNum(num))
-      })
-      a = digits[0]
-      b = digits[2]
-      if(b) {
-        result = operate(multiply, a, b)
-      } else {
-        result = 0
-      }
+      fullMultiplication()
       display.textContent = result + '×'
       digits = []
       count = display.textContent.length
     }
     // If prev was divide
     if(prevOperator == 'divide') {
-      let split = display.textContent.split('÷')
-      split.forEach(num => {
-        digits.push(strToNum(num))
-      })
-      a = digits[0]
-      b = digits[2]
-      if(b) {
-        result = operate(divide, a, b)
-        display.textContent = result + '×'
-      } else {
-        result = 'Cannot divide by 0'
-        operators.forEach(button => {
-          button.disabled = true;
-        })
-        display.textContent = result
-      }
+      fullDivision()
       digits = []
       count = display.textContent.length
     }
@@ -471,86 +297,28 @@ division.addEventListener('click', () => {
     let prevOperator = operatorList[operatorList.length -2]
     // If prev was subtract
     if(prevOperator == 'minus') {
-      let split = ''
-      if (display.textContent.slice(0, 1) == '-'){
-        digits = []
-        display.textContent = display.textContent.slice(1)
-        split = display.textContent.split('-')
-        split[0] = -split[0]
-        split.forEach(num => {
-          digits.push(strToNum(num))
-        })
-      } else {
-        digits = []
-        split = display.textContent.split('-')
-        split.forEach(num => {
-          digits.push(strToNum(num))
-        })
-      }
-      a = digits[0]
-      b = digits[1]
-      if(b) {
-        result = operate(subtract, a, b)
-      } else {
-        b = 0
-        result = a
-      }
+      fullSubtraction()
       display.textContent = result + '÷'
       digits = []
       count = display.textContent.length
     }
     // If prev was add
     if(prevOperator == 'add') {
-      let split = display.textContent.split('+')
-      split.forEach(num => {
-        digits.push(strToNum(num))
-      })
-      a = digits[0]
-      b = digits[2]
-      if(b) {
-        result = operate(add, a, b)
-      } else {
-        result = a
-      }
+      fullAddition()
       display.textContent = result + '÷'
       digits = []
       count = display.textContent.length
     }
     // If prev was times
     if(prevOperator == 'times') {
-      let split = display.textContent.split('×')
-      split.forEach(num => {
-        digits.push(strToNum(num))
-      })
-      a = digits[0]
-      b = digits[2]
-      if(b) {
-        result = operate(multiply, a, b)
-      } else {
-        result = 0
-      }
+      fullMultiplication()
       display.textContent = result + '÷'
       digits = []
       count = display.textContent.length
     }
     // If prev was divide
     if(prevOperator == 'divide') {
-      let split = display.textContent.split('÷')
-      split.forEach(num => {
-        digits.push(strToNum(num))
-      })
-      a = digits[0]
-      b = digits[2]
-      if(b) {
-        result = operate(divide, a, b)
-        display.textContent = result + '÷'
-      } else {
-        result = 'Cannot divide by 0'
-        operators.forEach(button => {
-          button.disabled = true;
-        })
-        display.textContent = result
-      }
+      fullDivision()
       digits = []
       count = display.textContent.length
     }
@@ -721,5 +489,87 @@ function operate(operator, a, b) {
   }
   if (operator == multiply) {
     return multiply(a, b)
+  }
+}
+
+function fullAddition() {
+  let split = display.textContent.split('+')
+  split.forEach(num => {
+    digits.push(strToNum(num))
+  })
+  a = digits[0]
+  b = digits[2]
+  if(b) {
+    result = operate(add, a, b)
+  } else {
+    result = a
+  }
+}
+
+function fullSubtraction() {
+  let split = ''
+  if (display.textContent.slice(0, 1) == '-'){
+    digits = []
+    display.textContent = display.textContent.slice(1)
+    split = display.textContent.split('-')
+    split[0] = -split[0]
+    split.forEach(num => {
+      digits.push(strToNum(num))
+    })
+  } else {
+    digits = []
+    split = display.textContent.split('-')
+    split.forEach(num => {
+      digits.push(strToNum(num))
+    })
+  }
+  a = digits[0]
+  b = digits[1]
+  if(b) {
+    result = operate(subtract, a, b)
+  } else {
+    b = 0
+    result = a
+  }
+}
+
+function fullMultiplication() {
+  let split = display.textContent.split('×')
+  split.forEach(num => {
+    digits.push(strToNum(num))
+  })
+  a = digits[0]
+  b = digits[2]
+  if(b) {
+    result = operate(multiply, a, b)
+  } else {
+    result = 0
+  }
+}
+
+function fullDivision() {
+  let split = display.textContent.split('÷')
+  split.forEach(num => {
+    digits.push(strToNum(num))
+  })
+  a = digits[0]
+  b = digits[2]
+  if(b) {
+    result = operate(divide, a, b)
+    if (currentOperator == 'add') {
+      display.textContent = result + '+'
+    } else if (currentOperator == 'minus') {
+      display.textContent = result + '-'
+    } else if (currentOperator == 'times') {
+      display.textContent = result + '×'
+    } else if (currentOperator == 'divide') {
+      display.textContent = result + '÷'
+    }
+  } else {
+    result = 'Cannot divide by 0'
+    operators.forEach(button => {
+      button.disabled = true;
+    })
+    display.textContent = result
   }
 }
